@@ -7,11 +7,13 @@
 //============================================================================
 
 #include <iostream>
+
 using namespace std;
 
 int main() {
 
-
+	cout << "Boo" << endl;
+	cout << "Boo" << endl;
 
 	return 0;
 }
