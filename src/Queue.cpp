@@ -7,19 +7,13 @@
 //=============================================================
 #include "Queue.h"
 
-Queue::Queue(int p_Size)
-: m_Size(p_Size)
-{
-    int TheArray[m_Size];
-}
-
 void Queue::Enqueue(int p_Value)
 {
     //Increment m_Tail
     m_Tail++;
 
     //Add value to TheArray
-    TheArray[m_Tail] = p_Value;
+    m_Array[m_Tail] = p_Value;
 
     //Increment m_Size
     m_Size++;
@@ -35,5 +29,5 @@ int Queue::Dequeue()
     m_Size--;
 
     //Return the value
-    return TheArray[m_Head + 1];
+    return m_Array[m_Head + 1];
 }

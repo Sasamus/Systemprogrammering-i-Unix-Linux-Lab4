@@ -12,7 +12,7 @@
 class Queue
 {
 public:
-    Queue(int p_Size);
+    Queue();
 
     ~Queue(){}
 
@@ -27,7 +27,9 @@ public:
 
 
 private:
-    int m_Size = 10;
+    int m_Size = 0;
+    const static int m_ARRAYSIZE = 10;
+    int m_Array[m_ARRAYSIZE];
     int m_Head = 0;
     int m_Tail = 0;
 
