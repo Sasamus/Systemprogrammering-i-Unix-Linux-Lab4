@@ -1,13 +1,18 @@
-CCX 		= g++ -std=c++0x -Wall -Wextra
+CC 			= g++
+CCFLAGS		= -std=c++0x -Wall -Wextra
 PROGS		= lab4
 LIBS		= -lrt
+FILES		= Lab4.cpp ProcessManager.cpp SharedMem.cc Queue.cpp
 OBJS		= Lab4.o ProcessManager.o SharedMem.o Queue.o
 
 
-all: lab4
+all: compile lab4
 
 lab4: $(OBJS)
-	$(CCX) -o $@ $(OBJS) $(LIBS)
+	$(CC) -o $@ $(CCFLAGS) $(OBJS) $(LIBS)
+
+compile: $(FILES)
+	$(CC) -c $(CCFLAGS) $(FILES)
 
 clean:
 	rm -f $(PROGS) $(OBJS)

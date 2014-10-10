@@ -31,3 +31,18 @@ int Queue::Dequeue()
     //Return the value
     return m_Array[m_Head + 1];
 }
+
+int Queue::Length()
+{
+    return m_Size;
+}
+
+bool Queue::Full()
+{
+    return m_Size == Constants::G_BUFFERSIZE;
+}
+
+bool Queue::Empty()
+{
+    return m_Size == 0;
+}
