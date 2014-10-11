@@ -1,0 +1,2 @@
+Error handling
+Maybe: Split ProcessManager into more classes

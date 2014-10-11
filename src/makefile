@@ -1,7 +1,7 @@
 CC 			= g++
 CCFLAGS		= -std=c++0x -Wall -Wextra
 PROGS		= lab4
-LIBS		= -lrt
+LIBS		= -lrt -pthread
 FILES		= Lab4.cpp ProcessManager.cpp SharedMem.cc Queue.cpp
 OBJS		= Lab4.o ProcessManager.o SharedMem.o Queue.o
 
