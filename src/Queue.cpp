@@ -2,47 +2,65 @@
 // Name        : Queue.cpp
 // Author      : Albin Engström
 // Created     : 2014-10-09
-// Modified    : 2014-10-11
+// Modified    : 2014-10-12
 // Description : Implementation of class Queue
 //=============================================================
 #include "Queue.h"
 
-void Queue::Enqueue(int p_Value)
+void Queue::Enqueue(int value)
 {
+    //Check if m_tail is at the end of m_array
+    if(m_head < Constants::G_BUFFERSIZE - 1)
+    {
+        //Increment m_tail
+        m_tail++;
+    }
+    else
+    {
+        //Increment m_tail, which wraps to 0
+        m_tail = 0;
+    }
+
+
     //Add value to TheArray
-    m_Array[m_Tail] = p_Value;
+    m_array[m_tail] = value;
 
-    //Increment m_Size
-    m_Size++;
-
-    //Increment m_Tail
-    m_Tail++;
-
+    //Increment m_size
+    m_size++;
 }
 
 int Queue::Dequeue()
 {
-    //Increment m_Head
-    m_Head++;
+    //Check if m_head is at the end of m_array
+    if(m_head < Constants::G_BUFFERSIZE - 1)
+    {
+        //Increment m_head
+        m_head++;
+    }
+    else
+    {
+        //Increment m_head, which wraps to 0
+        m_head = 0;
+    }
 
-    //Decrement m_Size
-    m_Size--;
+    //Decrement m_size
+    m_size--;
 
     //Return the value
-    return m_Array[m_Head - 1];
+    return m_array[m_head - 1];
 }
 
 int Queue::Length()
 {
-    return m_Size;
+    return m_size;
 }
 
 bool Queue::Full()
 {
-    return m_Size == Constants::G_BUFFERSIZE;
+    return m_size == Constants::G_BUFFERSIZE;
 }
 
 bool Queue::Empty()
 {
-    return m_Size == 0;
+    return m_size == 0;
 }

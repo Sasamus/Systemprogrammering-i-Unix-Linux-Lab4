@@ -2,7 +2,7 @@
 // Name        : Queue.h
 // Author      : Albin Engström
 // Created     : 2014-10-09
-// Modified    : 2014-10-10
+// Modified    : 2014-10-12
 // Description : Definition of class Queue
 // Purpose     : Act as an FIFO queue
 //=============================================================
@@ -18,7 +18,7 @@ public:
 
     ~Queue(){}
 
-    void Enqueue(int p_Value);
+    void Enqueue(int value);
     //Pre: The queue isn't full
     //Post: p_Value is added to the queue
 
@@ -41,10 +41,10 @@ public:
 
 
 private:
-    int m_Size = 0;
-    int m_Array[Constants::G_BUFFERSIZE];
-    int m_Head = 0;
-    int m_Tail = 0;
+    int m_size = 0;
+    int m_array[Constants::G_BUFFERSIZE];
+    int m_head = 0;
+    int m_tail = -1;
 
 };
 

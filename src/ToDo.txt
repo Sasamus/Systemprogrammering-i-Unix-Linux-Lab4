@@ -1,2 +1,3 @@
+Put semaphores in shared memmory!
 Error handling
 Maybe: Split ProcessManager into more classes
