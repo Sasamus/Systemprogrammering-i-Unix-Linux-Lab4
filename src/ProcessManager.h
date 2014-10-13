@@ -2,7 +2,7 @@
 // Name        : ProcessManager.h
 // Author      : Albin Engström
 // Created     : 2014-10-08
-// Modified    : 2014-10-12
+// Modified    : 2014-10-13
 // Description : Definition of class ProcessManager
 // Purpose     : Manages the programs processes
 //=============================================================
@@ -33,10 +33,10 @@ private:
     Queue *m_queue;
 
     //Semaphore for space available in buffer
-    sem_t m_space_available;
+    sem_t *m_space_available;
 
     //Semaphore for items available in buffer
-    sem_t m_items_available;
+    sem_t *m_items_available;
 
     //Holds the process pid
     pid_t m_pid;
