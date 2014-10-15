@@ -2,7 +2,7 @@
 // Name        : ProcessManager.h
 // Author      : Albin Engström
 // Created     : 2014-10-08
-// Modified    : 2014-10-13
+// Modified    : 2014-10-15
 // Description : Definition of class ProcessManager
 // Purpose     : Manages the programs processes
 //=============================================================
@@ -17,16 +17,22 @@
 #include <iostream>
 #include <semaphore.h>
 #include <unistd.h>
+#include <cstdlib>
+#include <ctime>
 
 class ProcessManager
 {
 public:
     ProcessManager(){}
-    ~ProcessManager(){}
+    ~ProcessManager();
 
     int Run();
     //Pre:
     //Post: Create and manage the processes
+
+    int CreateSharedMem();
+    //Pre:
+    //Post: Create a SharedMem object and the things in it
 
 private:
     //A pointer to a Queue object
@@ -40,6 +46,9 @@ private:
 
     //Holds the process pid
     pid_t m_pid;
+
+    //A pointer to a SharedMem object
+    SharedMem *m_shared_mem;
 };
 
 #endif //PROCESSMANAGER_H
