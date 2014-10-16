@@ -2,7 +2,7 @@
 // Name        : ProcessManager.cpp
 // Author      : Albin Engström
 // Created     : 2014-10-08
-// Modified    : 2014-10-15
+// Modified    : 2014-10-16
 // Description : Implementation of class Processmanager
 //=============================================================
 #include "ProcessManager.h"
@@ -32,7 +32,7 @@ ProcessManager::~ProcessManager()
     }
 }
 
-int ProcessManager::Run()
+int ProcessManager::Run(int nr_numbers)
 {
     //Calls CreateSharedMem()
     if(CreateSharedMem() == -1)
@@ -57,23 +57,39 @@ int ProcessManager::Run()
     if(m_pid != 0)
     //Parent
     {
-        for(unsigned int i=0; i < 1000; i++)
+        for(int i=0; i < nr_numbers; i++)
         {
+            //Wait for space in buffer
             sem_wait(m_space_available);
-            m_queue->Enqueue(rand() % 899 + 100);
+
+            //Generate a number
+            int nr = rand() % 899 + 100;
+
+            //Add nr to buffer
+            m_queue->Enqueue(nr);
+
+            //Print some info to screen
+            std::cout << "Producer: " << nr << "   Items in buffer: ";
+            std::cout << m_queue->Length() << std::endl;
+
+            //Announce that a number have been added to the buffer
             sem_post(m_items_available);
         }
     }
     else
     //Child
     {
-
-        for(unsigned int i=0; i < 1000; i++)
+        for(int i=0; i < nr_numbers; i++)
         {
+            //Wait for an item to be available in the buffer
             sem_wait(m_items_available);
-            std::cout << "Consumer: "
-                << m_queue->Dequeue() << "   Items in buffer: "
-                << m_queue->Length() << std::endl;
+
+            //Print some info to screen and remove number from buffer
+            std::cout << "Consumer: " << m_queue->Dequeue();
+            std::cout << "   Items in buffer: " <<;
+            std::cout << m_queue->Length() << std::endl;
+
+            //Announce that an item have been removed from buffer
             sem_post(m_space_available);
         }
     }

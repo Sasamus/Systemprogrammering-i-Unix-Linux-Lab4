@@ -2,7 +2,7 @@
 // Name        : Queue.cpp
 // Author      : Albin Engström
 // Created     : 2014-10-09
-// Modified    : 2014-10-12
+// Modified    : 2014-10-16
 // Description : Implementation of class Queue
 //=============================================================
 #include "Queue.h"
@@ -47,7 +47,14 @@ int Queue::Dequeue()
     m_size--;
 
     //Return the value
-    return m_array[m_head - 1];
+    if(m_head == 0)
+    {
+        return m_array[Constants::G_BUFFERSIZE -1];
+    }
+    else
+    {
+        return m_array[m_head - 1];
+    }
 }
 
 int Queue::Length()

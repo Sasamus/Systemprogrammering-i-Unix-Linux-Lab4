@@ -1,3 +1,2 @@
-Command line arguments
-Error handling
-Maybe: Split ProcessManager into more classes
+Nanosleep
+Make sure error handling is complete

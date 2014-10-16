@@ -2,7 +2,7 @@
 // Name        : ProcessManager.h
 // Author      : Albin Engström
 // Created     : 2014-10-08
-// Modified    : 2014-10-15
+// Modified    : 2014-10-16
 // Description : Definition of class ProcessManager
 // Purpose     : Manages the programs processes
 //=============================================================
@@ -26,7 +26,7 @@ public:
     ProcessManager(){}
     ~ProcessManager();
 
-    int Run();
+    int Run(int nr_numbers);
     //Pre:
     //Post: Create and manage the processes
 
