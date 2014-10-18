@@ -9,11 +9,21 @@
 #include "ProcessManager.h"
 
 #include<iostream>
+#include<time.h>
 
 using namespace std;
 
 int main(int argc, char* argv[])
 {
+    //Sets some signals to be handled by a custom handler
+	struct sigaction act;
+	act.sa_handler = SIGHandler;
+	if(sigaction(SIGUSR1, &act, 0) == -1 || sigaction(SIGUSR2, &act, 0) == -1)
+	{
+		perror("Error");
+		exit(-1);
+	}
+
     //Create a ProcessManager object
     ProcessManager process_manager;
 
@@ -38,4 +48,17 @@ int main(int argc, char* argv[])
     }
 
     return 0;
+}
+
+//Handles signals
+static void SIGHandler(int pSIG)
+{
+	if(pSIG == SIGUSR1)
+	{
+
+	}
+    else if(pSIG == SIGUSR2)
+    {
+
+    }
 }
