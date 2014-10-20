@@ -2,7 +2,7 @@
 // Name        : Queue.h
 // Author      : Albin Engström
 // Created     : 2014-10-09
-// Modified    : 2014-10-12
+// Modified    : 2014-10-20
 // Description : Definition of class Queue
 // Purpose     : Act as an FIFO queue
 //=============================================================
@@ -20,7 +20,7 @@ public:
 
     void Enqueue(int value);
     //Pre: The queue isn't full
-    //Post: p_Value is added to the queue
+    //Post: Value is added to the queue
 
     int Dequeue();
     //Pre: The queue isn't empty

@@ -2,7 +2,7 @@
 // Name        : Queue.cpp
 // Author      : Albin Engström
 // Created     : 2014-10-09
-// Modified    : 2014-10-16
+// Modified    : 2014-10-20
 // Description : Implementation of class Queue
 //=============================================================
 #include "Queue.h"

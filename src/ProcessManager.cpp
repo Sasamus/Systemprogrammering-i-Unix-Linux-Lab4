@@ -2,7 +2,7 @@
 // Name        : ProcessManager.cpp
 // Author      : Albin Engström
 // Created     : 2014-10-08
-// Modified    : 2014-10-16
+// Modified    : 2014-10-20
 // Description : Implementation of class Processmanager
 //=============================================================
 #include "ProcessManager.h"
@@ -50,23 +50,41 @@ int ProcessManager::Run(int nr_numbers)
         return -1;
     }
 
-    //Seed rand
-    srand(time(NULL));
-
     //Check if parent or child
     if(m_pid != 0)
     //Parent
     {
+        //Seed rand
+        srand(time(NULL));
+
+        //A variable to hold the generated number
+        int nr;
+
         for(int i=0; i < nr_numbers; i++)
         {
+            //Check if parent should sleep
+            if(m_parent_sleep == true)
+            {
+                //Tries to sleep
+                if(Sleep() == -1)
+                {
+                    perror(NULL);
+                }
+
+                //Set m_parent_sleep to false
+                m_parent_sleep = false;
+            }
+
             //Wait for space in buffer
             sem_wait(m_space_available);
 
             //Generate a number
-            int nr = rand() % 899 + 100;
+            nr =  rand() % 9 + 1;
 
             //Add nr to buffer
+            sem_wait(m_editing_allowed);
             m_queue->Enqueue(nr);
+            sem_post(m_editing_allowed);
 
             //Print some info to screen
             std::cout << "Producer: " << nr << "   Items in buffer: ";
@@ -81,12 +99,27 @@ int ProcessManager::Run(int nr_numbers)
     {
         for(int i=0; i < nr_numbers; i++)
         {
+            //Check if parent should sleep
+            if(m_child_sleep == true)
+            {
+                //Tries to sleep
+                if(Sleep() == -1)
+                {
+                    perror(NULL);
+                }
+
+                //Set m_child_sleep to false
+                m_child_sleep = false;
+            }
+
             //Wait for an item to be available in the buffer
             sem_wait(m_items_available);
 
             //Print some info to screen and remove number from buffer
+            sem_wait(m_editing_allowed);
             std::cout << "Consumer: " << m_queue->Dequeue();
-            std::cout << "   Items in buffer: " <<;
+            sem_post(m_editing_allowed);
+            std::cout << "   Items in buffer: ";
             std::cout << m_queue->Length() << std::endl;
 
             //Announce that an item have been removed from buffer
@@ -102,7 +135,7 @@ int ProcessManager::CreateSharedMem()
 {
     //Calculate the size the SharedMem object should have
     int size = sizeof(m_queue) + sizeof(m_space_available) +
-                sizeof(m_items_available);
+                sizeof(m_items_available) + sizeof(m_editing_allowed);
 
     //Create a SharedMem object
     m_shared_mem = new SharedMem(IPC_PRIVATE, size);
@@ -122,6 +155,9 @@ int ProcessManager::CreateSharedMem()
                         + sizeof(m_queue)) sem_t();
     m_items_available = new ((sem_t*) m_shared_mem->getAddr()
                         + sizeof(m_queue) + sizeof(m_space_available)) sem_t();
+    m_editing_allowed = new ((sem_t*) m_shared_mem->getAddr()
+                        + sizeof(m_queue) + sizeof(m_space_available)) sem_t()
+                        + sizeof(m_items_available);
 
     //Initialize the sempahores
     if(sem_init(m_space_available, 1, Constants::G_BUFFERSIZE) == -1)
@@ -134,6 +170,34 @@ int ProcessManager::CreateSharedMem()
         perror(NULL);
         return -1;
     }
+    if(sem_init(m_editing_allowed, 1, 1) == -1)
+    {
+        perror(NULL);
+        return -1;
+    }
 
     return 0;
+}
+
+void ProcessManager::SetParentToSleep()
+{
+    m_parent_sleep = true;
+}
+
+void ProcessManager::SetChildToSleep()
+{
+    m_child_sleep = true;
+}
+
+int ProcessManager::Sleep()
+{
+    //Creates a timespec to hold the time to sleep
+    struct timespec sleep_time;
+
+    //Initializes it's members
+    sleep_time.tv_sec = 5;
+    sleep_time.tv_nsec = 0;
+
+    //Tries to initiate sleep
+    return(nanosleep(&sleep_time, (struct timespec *)NULL));
 }
